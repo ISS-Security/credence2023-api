@@ -1,0 +1,14 @@
+---
+AllCops:
+  TargetRubyVersion: 3.0
+  NewCops: enable         # enable new upcoming cops for rubocop
+
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - spec/**/*
+
+Security/YAMLLoad:
+  Enabled: true
+  Exclude:
+    - spec/**/*
