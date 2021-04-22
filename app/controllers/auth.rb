@@ -13,8 +13,7 @@ module Credence
           credentials = JSON.parse(request.body.read, symbolize_names: true)
           auth_account = AuthenticateAccount.call(credentials)
           auth_account.to_json
-        rescue UnauthorizedError => e
-          puts [e.class, e.message].join ': '
+        rescue UnauthorizedError
           routing.halt '403', { message: 'Invalid credentials' }.to_json
         end
       end
