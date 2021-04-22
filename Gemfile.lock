@@ -73,21 +73,21 @@ PLATFORMS
 DEPENDENCIES
   bundler-audit
   figaro (~> 1.2)
-  hirb
+  hirb (~> 0.7)
   json
   minitest
   minitest-rg
   pry
   puma (~> 5.6)
   rack-test
-  rake
+  rake (~> 13.0)
   rbnacl (~> 7.1)
   rerun
   roda (~> 3.54)
   rubocop
   rubocop-performance
-  sequel (~> 5.55)
-  sqlite3 (~> 1.4)
+  sequel (~> 5.67)
+  sqlite3 (~> 1.6)
 
 BUNDLED WITH
    2.3.7
