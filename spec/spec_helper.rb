@@ -9,9 +9,9 @@ require 'yaml'
 require_relative 'test_load_all'
 
 def wipe_database
-  app.DB[:documents].delete
-  app.DB[:projects].delete
-  app.DB[:accounts].delete
+  Credence::Document.map(&:destroy)
+  Credence::Project.map(&:destroy)
+  Credence::Account.map(&:destroy)
 end
 
 DATA = {

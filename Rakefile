@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/HashSyntax, Style/SymbolArray, Metrics/BlockLength
 require 'rake/testtask'
 require './require_app'
 
@@ -104,3 +105,4 @@ namespace :newkey do
     puts "DB_KEY: #{SecureDB.generate_key}"
   end
 end
+# rubocop:enable Style/HashSyntax, Style/SymbolArray, Metrics/BlockLength
