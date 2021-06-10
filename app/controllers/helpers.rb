@@ -10,14 +10,21 @@ module Credence
       routing.scheme.casecmp(Api.config.SECURE_SCHEME).zero?
     end
 
-    def authenticated_account(headers)
+    def authorization(headers)
       return nil unless headers['AUTHORIZATION']
 
-      scheme, auth_token = headers['AUTHORIZATION'].split
+      scheme, auth_token = headers['AUTHORIZATION'].split(' ')
       return nil unless scheme.match?(/^Bearer$/i)
 
-      account_payload = AuthToken.new(auth_token).payload
-      Account.first(username: account_payload['attributes']['username'])
+      scoped_auth(auth_token)
+    end
+
+    def scoped_auth(auth_token)
+      token = AuthToken.new(auth_token)
+      account_data = token.payload['attributes']
+
+      { account: Account.first(username: account_data['username']),
+        scope: AuthScope.new(token.scope) }
     end
   end
 end

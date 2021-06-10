@@ -2,7 +2,7 @@
 
 require 'roda'
 require 'json'
-require_relative './helpers'
+require_relative './helpers.rb'
 
 module Credence
   # Web controller for Credence API
@@ -14,6 +14,8 @@ module Credence
 
     include SecureRequestHelpers
 
+    UNAUTH_MSG = { message: 'Unauthorized Request' }.to_json
+
     route do |routing|
       response['Content-Type'] = 'application/json'
 
@@ -21,7 +23,8 @@ module Credence
         routing.halt(403, { message: 'TLS/SSL Required' }.to_json)
 
       begin
-        @auth_account = authenticated_account(routing.headers)
+        @auth = authorization(routing.headers)
+        @auth_account = @auth[:account] if @auth
       rescue AuthToken::InvalidTokenError
         routing.halt 403, { message: 'Invalid auth token' }.to_json
       rescue AuthToken::ExpiredTokenError
