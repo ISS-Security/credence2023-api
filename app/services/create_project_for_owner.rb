@@ -6,7 +6,7 @@ module Credence
     # Error for owner cannot be collaborator
     class ForbiddenError < StandardError
       def message
-        'You are not allowed to add more documents'
+        'You are not allowed to create projects'
       end
     end
 

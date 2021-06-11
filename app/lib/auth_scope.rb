@@ -5,13 +5,13 @@ class AuthScope
   ALL = '*'
   READ = 'read'
   WRITE = 'write'
-  EVERYTHING = '*:write'
+  FULL = '*:write'
   READ_ONLY = '*:read'
 
   SEPARATOR = ' '
   DIVIDER = ':'
 
-  def initialize(scopes = EVERYTHING)
+  def initialize(scopes = FULL)
     @scopes_str = scopes
     @scopes = {}
     scopes.split(SEPARATOR).each { |scope| add_scope(scope) }
