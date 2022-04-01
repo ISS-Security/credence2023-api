@@ -1,7 +1,9 @@
 ---
 AllCops:
-  TargetRubyVersion: 3.0
+  TargetRubyVersion: 3.2
   NewCops: enable         # enable new upcoming cops for rubocop
+  Exclude:
+    - _snippets/**/*
 
 Metrics/BlockLength:
   Enabled: true

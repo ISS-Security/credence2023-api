@@ -23,10 +23,10 @@ module Credence
       JSON(
         {
           type: 'document',
-          id: id,
-          filename: filename,
-          description: description,
-          content: content
+          id:,
+          filename:,
+          description:,
+          content:
         },
         options
       )
@@ -51,7 +51,7 @@ module Credence
     # Query method to retrieve index of all documents
     def self.all
       Dir.glob("#{Credence::STORE_DIR}/*.txt").map do |file|
-        file.match(%r{#{Regexp.quote(Credence::STORE_DIR)}\/(.*)\.txt})[1]
+        file.match(%r{#{Regexp.quote(Credence::STORE_DIR)}/(.*)\.txt})[1]
       end
     end
 

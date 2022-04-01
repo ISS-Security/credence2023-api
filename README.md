@@ -32,5 +32,5 @@ ruby spec/api_spec.rb
 Run this API using:
 
 ```shell
-rackup
+puma
 ```
