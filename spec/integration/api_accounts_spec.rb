@@ -35,7 +35,7 @@ describe 'Test Account Handling' do
     it 'HAPPY: should be able to create new accounts' do
       post 'api/v1/accounts', @account_data.to_json, @req_header
       _(last_response.status).must_equal 201
-      _(last_response.header['Location'].size).must_be :>, 0
+      _(last_response.headers['Location'].size).must_be :>, 0
 
       created = JSON.parse(last_response.body)['data']
       account = Credence::Account.first
@@ -53,7 +53,7 @@ describe 'Test Account Handling' do
       post 'api/v1/accounts', bad_data.to_json, @req_header
 
       _(last_response.status).must_equal 400
-      _(last_response.header['Location']).must_be_nil
+      _(last_response.headers['Location']).must_be_nil
     end
   end
 end

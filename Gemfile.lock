@@ -19,7 +19,7 @@ GEM
     minitest-rg (5.2.0)
       minitest (~> 5.0)
     nio4r (2.5.9)
-    parallel (1.22.1)
+    parallel (1.23.0)
     parser (3.2.2.0)
       ast (~> 2.4.1)
     pry (0.14.2)
@@ -37,13 +37,13 @@ GEM
       ffi (~> 1.0)
     rbnacl (7.1.1)
       ffi
-    regexp_parser (2.7.0)
+    regexp_parser (2.8.0)
     rerun (0.14.0)
       listen (~> 3.0)
     rexml (3.2.5)
-    roda (3.66.0)
+    roda (3.67.0)
       rack
-    rubocop (1.49.0)
+    rubocop (1.50.2)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.2.0.0)
@@ -55,11 +55,13 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.28.0)
       parser (>= 3.2.1.0)
-    rubocop-performance (1.16.0)
+    rubocop-performance (1.17.1)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.13.0)
     sequel (5.67.0)
+    sequel-seed (1.1.2)
+      sequel (>= 4.49.0)
     sqlite3 (1.6.2-arm64-darwin)
     sqlite3 (1.6.2-x86_64-darwin)
     thor (1.2.1)
@@ -87,6 +89,7 @@ DEPENDENCIES
   rubocop
   rubocop-performance
   sequel (~> 5.67)
+  sequel-seed
   sqlite3 (~> 1.6)
 
 BUNDLED WITH

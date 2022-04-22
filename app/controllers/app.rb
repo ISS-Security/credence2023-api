@@ -39,13 +39,13 @@ module Credence
 
             response.status = 201
             response['Location'] = "#{@account_route}/#{new_account.id}"
-            { message: 'Project saved', data: new_account }.to_json
+            { message: 'Account created', data: new_account }.to_json
           rescue Sequel::MassAssignmentRestriction
             Api.logger.warn "MASS-ASSIGNMENT:: #{new_data.keys}"
             routing.halt 400, { message: 'Illegal Request' }.to_json
-          rescue StandardError
+          rescue StandardError => e
             Api.logger.error 'Unknown error saving account'
-            routing.halt 500, { message: error.message }.to_json
+            routing.halt 500, { message: e.message }.to_json
           end
         end
 
@@ -82,7 +82,7 @@ module Credence
                 response['Location'] = "#{@doc_route}/#{new_doc.id}"
                 { message: 'Document saved', data: new_doc }.to_json
               rescue Sequel::MassAssignmentRestriction
-                Api.logger.warn "MASS-ASSIGNMENT:: #{new_data.keys}"
+                Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
                 routing.halt 400, { message: 'Illegal Attributes' }.to_json
               rescue StandardError => e
                 routing.halt 500, { message: e.message }.to_json
