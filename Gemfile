@@ -4,11 +4,11 @@ source 'https://rubygems.org'
 
 # Web API
 gem 'json'
-gem 'puma', '~>5'
-gem 'roda', '~>3'
+gem 'puma', '~>5.6'
+gem 'roda', '~>3.54'
 
 # Security
-gem 'rbnacl', '~>7'
+gem 'rbnacl', '~>7.1'
 
 # Testing
 gem 'minitest'
@@ -19,5 +19,5 @@ gem 'rack-test'
 gem 'pry'
 gem 'rerun'
 
-# Static
+# Quality
 gem 'rubocop'
