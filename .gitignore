@@ -1,5 +1,5 @@
 _*
 .bundle
 .irb_history
-app/db/store/*.db
+app/db/store/*
 config/secrets.yml
