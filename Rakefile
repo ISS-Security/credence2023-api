@@ -3,6 +3,7 @@
 require 'rake/testtask'
 require './require_app'
 
+# rubocop:disable Style/HashSyntax, Style/SymbolArray
 task :default => :spec
 
 desc 'Tests API specs only'
@@ -12,7 +13,7 @@ end
 
 desc 'Test all the specs'
 Rake::TestTask.new(:spec) do |t|
-  t.pattern = 'spec/*_spec.rb'
+  t.pattern = 'spec/**/*_spec.rb'
   t.warning = false
 end
 
@@ -40,7 +41,7 @@ task :console => :print_env do
   sh 'pry -r ./spec/test_load_all'
 end
 
-namespace :db do
+namespace :db do # rubocop:disable Metrics/BlockLength
   task :load do
     require_app(nil) # load nothing by default
     require 'sequel'
@@ -76,3 +77,12 @@ namespace :db do
     puts "Deleted #{db_filename}"
   end
 end
+
+namespace :newkey do
+  desc 'Create sample cryptographic key for database'
+  task :db do
+    require_app('lib')
+    puts "DB_KEY: #{SecureDB.generate_key}"
+  end
+end
+# rubocop:enable Style/HashSyntax, Style/SymbolArray

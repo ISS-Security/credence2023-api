@@ -8,6 +8,7 @@ module Credence
   class Api < Roda
     plugin :halt
 
+    # rubocop:disable Metrics/BlockLength
     route do |routing|
       response['Content-Type'] = 'application/json'
 
@@ -39,26 +40,25 @@ module Credence
                 routing.halt 404, message: 'Could not find documents'
               end
 
-              # POST api/v1/projects/[ID]/documents
+              # POST api/v1/projects/[proj_id]/documents
               routing.post do
                 new_data = JSON.parse(routing.body.read)
                 proj = Project.first(id: proj_id)
                 new_doc = proj.add_document(new_data)
+                raise 'Could not save document' unless new_doc
 
-                if new_doc
-                  response.status = 201
-                  response['Location'] = "#{@doc_route}/#{new_doc.id}"
-                  { message: 'Document saved', data: new_doc }.to_json
-                else
-                  routing.halt 400, 'Could not save document'
-                end
-
-              rescue StandardError
-                routing.halt 500, { message: 'Database error' }.to_json
+                response.status = 201
+                response['Location'] = "#{@doc_route}/#{new_doc.id}"
+                { message: 'Document saved', data: new_doc }.to_json
+              rescue Sequel::MassAssignmentRestriction
+                Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
+                routing.halt 400, { message: 'Illegal Attributes' }.to_json
+              rescue StandardError => e
+                routing.halt 500, { message: e.message }.to_json
               end
             end
 
-            # GET api/v1/projects/[ID]
+            # GET api/v1/projects/[proj_id]
             routing.get do
               proj = Project.first(id: proj_id)
               proj ? proj.to_json : raise('Project not found')
@@ -84,11 +84,16 @@ module Credence
             response.status = 201
             response['Location'] = "#{@proj_route}/#{new_proj.id}"
             { message: 'Project saved', data: new_proj }.to_json
+          rescue Sequel::MassAssignmentRestriction
+            Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
+            routing.halt 400, { message: 'Illegal Attributes' }.to_json
           rescue StandardError => e
-            routing.halt 400, { message: e.message }.to_json
+            Api.logger.error "UNKOWN ERROR: #{e.message}"
+            routing.halt 500, { message: 'Unknown server error' }.to_json
           end
         end
       end
     end
+    # rubocop:enable Metrics/BlockLength
   end
 end
