@@ -1,0 +1,24 @@
+---
+- filename: config_env.rb
+  description: environmental configurations for test, development envs
+  relative_path: 'config/'
+  content: |-
+    ENV['asdf']='asdfasdf123'
+    ENV['abc']='abcdefghi'
+- filename: app.yml
+  description: credentials file
+  relative_path: ''
+  content: |-
+    ---
+      val: 123
+      group: 雷門
+- filename: config.json
+  description: credentials file
+  relative_path: 'config/'
+  content: '{ "name": "some name"}'
+- filename: conf.yml
+  description: access tokens
+  relative_path: 'secrets/'
+  content: |-
+    ---
+      token: ljkasdfk
