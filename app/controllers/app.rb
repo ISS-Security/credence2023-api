@@ -7,124 +7,28 @@ module Credence
   # Web controller for Credence API
   class Api < Roda
     plugin :halt
+    plugin :multi_route
 
-    # rubocop:disable Metrics/BlockLength
+    def secure_request?(routing)
+      routing.scheme.casecmp(Api.config.SECURE_SCHEME).zero?
+    end
+
     route do |routing|
       response['Content-Type'] = 'application/json'
+
+      secure_request?(routing) ||
+        routing.halt(403, { message: 'TLS/SSL Required' }.to_json)
 
       routing.root do
         { message: 'CredenceAPI up at /api/v1' }.to_json
       end
 
-      @api_root = 'api/v1'
-      routing.on @api_root do
-        routing.on 'accounts' do
-          @account_route = "#{@api_root}/accounts"
-
-          routing.on String do |username|
-            # GET api/v1/accounts/[username]
-            routing.get do
-              account = Account.first(username:)
-              account ? account.to_json : raise('Account not found')
-            rescue StandardError
-              routing.halt 404, { message: error.message }.to_json
-            end
-          end
-
-          # POST api/v1/accounts
-          routing.post do
-            new_data = JSON.parse(routing.body.read)
-            new_account = Account.new(new_data)
-            raise('Could not save account') unless new_account.save
-
-            response.status = 201
-            response['Location'] = "#{@account_route}/#{new_account.id}"
-            { message: 'Account created', data: new_account }.to_json
-          rescue Sequel::MassAssignmentRestriction
-            Api.logger.warn "MASS-ASSIGNMENT:: #{new_data.keys}"
-            routing.halt 400, { message: 'Illegal Request' }.to_json
-          rescue StandardError => e
-            Api.logger.error 'Unknown error saving account'
-            routing.halt 500, { message: e.message }.to_json
-          end
-        end
-
-        routing.on 'projects' do
-          @proj_route = "#{@api_root}/projects"
-
-          routing.on String do |proj_id|
-            routing.on 'documents' do
-              @doc_route = "#{@api_root}/projects/#{proj_id}/documents"
-              # GET api/v1/projects/[proj_id]/documents/[doc_id]
-              routing.get String do |doc_id|
-                doc = Document.where(project_id: proj_id, id: doc_id).first
-                doc ? doc.to_json : raise('Document not found')
-              rescue StandardError => e
-                routing.halt 404, { message: e.message }.to_json
-              end
-
-              # GET api/v1/projects/[proj_id]/documents
-              routing.get do
-                output = { data: Project.first(id: proj_id).documents }
-                JSON.pretty_generate(output)
-              rescue StandardError
-                routing.halt 404, message: 'Could not find documents'
-              end
-
-              # POST api/v1/projects/[proj_id]/documents
-              routing.post do
-                new_data = JSON.parse(routing.body.read)
-                proj = Project.first(id: proj_id)
-                new_doc = proj.add_document(new_data)
-                raise 'Could not save document' unless new_doc
-
-                response.status = 201
-                response['Location'] = "#{@doc_route}/#{new_doc.id}"
-                { message: 'Document saved', data: new_doc }.to_json
-              rescue Sequel::MassAssignmentRestriction
-                Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
-                routing.halt 400, { message: 'Illegal Attributes' }.to_json
-              rescue StandardError => e
-                routing.halt 500, { message: e.message }.to_json
-              end
-            end
-
-            # GET api/v1/projects/[proj_id]
-            routing.get do
-              proj = Project.first(id: proj_id)
-              proj ? proj.to_json : raise('Project not found')
-            rescue StandardError => e
-              routing.halt 404, { message: e.message }.to_json
-            end
-          end
-
-          # GET api/v1/projects
-          routing.get do
-            output = { data: Project.all }
-            JSON.pretty_generate(output)
-          rescue StandardError
-            routing.halt 404, { message: 'Could not find projects' }.to_json
-          end
-
-          # POST api/v1/projects
-          routing.post do
-            new_data = JSON.parse(routing.body.read)
-            new_proj = Project.new(new_data)
-            raise('Could not save project') unless new_proj.save
-
-            response.status = 201
-            response['Location'] = "#{@proj_route}/#{new_proj.id}"
-            { message: 'Project saved', data: new_proj }.to_json
-          rescue Sequel::MassAssignmentRestriction
-            Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
-            routing.halt 400, { message: 'Illegal Attributes' }.to_json
-          rescue StandardError => e
-            Api.logger.error "UNKOWN ERROR: #{e.message}"
-            routing.halt 500, { message: 'Unknown server error' }.to_json
-          end
+      routing.on 'api' do
+        routing.on 'v1' do
+          @api_root = 'api/v1'
+          routing.multi_route
         end
       end
     end
-    # rubocop:enable Metrics/BlockLength
   end
 end

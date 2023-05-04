@@ -23,21 +23,17 @@ module Credence
     plugin :whitelist_security
     set_allowed_columns :name, :repo_url
 
-    # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
         {
-          data: {
-            type: 'project',
-            attributes: {
-              id:,
-              name:,
-              repo_url:
-            }
+          type: 'project',
+          attributes: {
+            id:,
+            name:,
+            repo_url:
           }
         }, options
       )
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end
