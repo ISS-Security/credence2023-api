@@ -67,3 +67,41 @@ Before submitting pull requests, please check if specs, style, and dependency au
 ```shell
 rake release?
 ```
+
+## Test
+
+Setup test database once:
+
+```shell
+RACK_ENV=test rake db:migrate
+```
+
+Run the test specification script in `Rakefile`:
+
+```shell
+rake spec
+```
+
+## Develop/Debug
+
+Add fake data to the development database to work on this project:
+
+```shell
+rake db:seed
+```
+
+## Execute
+
+Launch the API using:
+
+```shell
+rackup
+```
+
+## Release check
+
+Before submitting pull requests, please check if specs, style, and dependency audits pass (will need to be online to update dependency database):
+
+```shell
+rake release?
+```

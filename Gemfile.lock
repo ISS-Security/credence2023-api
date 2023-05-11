@@ -20,12 +20,13 @@ GEM
       minitest (~> 5.0)
     nio4r (2.5.9)
     parallel (1.23.0)
-    parser (3.2.2.0)
+    parser (3.2.2.1)
       ast (~> 2.4.1)
+    pg (1.5.3)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    puma (5.6.5)
+    puma (6.2.2)
       nio4r (~> 2.0)
     rack (3.0.7)
     rack-test (2.1.0)
@@ -53,24 +54,23 @@ GEM
       rubocop-ast (>= 1.28.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.28.0)
+    rubocop-ast (1.28.1)
       parser (>= 3.2.1.0)
     rubocop-performance (1.17.1)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.13.0)
-    sequel (5.67.0)
+    sequel (5.68.0)
     sequel-seed (1.1.2)
       sequel (>= 4.49.0)
     sqlite3 (1.6.2-arm64-darwin)
-    sqlite3 (1.6.2-x86_64-darwin)
+    sqlite3 (1.6.2-x86_64-linux)
     thor (1.2.1)
     unicode-display_width (2.4.2)
 
 PLATFORMS
-  arm64-darwin-21
   arm64-darwin-22
-  x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   bundler-audit
@@ -79,8 +79,9 @@ DEPENDENCIES
   json
   minitest
   minitest-rg
+  pg
   pry
-  puma (~> 5.6)
+  puma (~> 6.2)
   rack-test
   rake (~> 13.0)
   rbnacl (~> 7.1)
@@ -91,6 +92,9 @@ DEPENDENCIES
   sequel (~> 5.67)
   sequel-seed
   sqlite3 (~> 1.6)
+
+RUBY VERSION
+   ruby 3.2.1p31
 
 BUNDLED WITH
    2.3.7

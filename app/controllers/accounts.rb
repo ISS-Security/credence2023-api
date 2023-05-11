@@ -27,7 +27,7 @@ module Credence
 
         response.status = 201
         response['Location'] = "#{@account_route}/#{new_account.username}"
-        { message: 'Project saved', data: new_account }.to_json
+        { message: 'Account created', data: new_account }.to_json
       rescue Sequel::MassAssignmentRestriction
         Api.logger.warn "MASS-ASSIGNMENT:: #{new_data.keys}"
         routing.halt 400, { message: 'Illegal Request' }.to_json
