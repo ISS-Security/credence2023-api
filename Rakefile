@@ -105,6 +105,12 @@ namespace :newkey do
     require_app('lib')
     puts "DB_KEY: #{SecureDB.generate_key}"
   end
+
+  desc 'Create sample cryptographic key for tokens and messaging'
+  task :msg do
+    require_app('lib')
+    puts "MSG_KEY: #{AuthToken.generate_key}"
+  end
 end
 
 namespace :run do

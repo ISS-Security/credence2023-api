@@ -58,12 +58,13 @@ module Credence
         end
       end
 
-      # GET api/v1/projects
+      # GET api/v1/projects/
       routing.get do
-        output = { data: Project.all }
-        JSON.pretty_generate(output)
+        account = Account.first(username: @auth_account['username'])
+        projects = account.projects
+        JSON.pretty_generate(data: projects)
       rescue StandardError
-        routing.halt 404, { message: 'Could not find projects' }.to_json
+        routing.halt 403, { message: 'Could not find any projects' }.to_json
       end
 
       # POST api/v1/projects
